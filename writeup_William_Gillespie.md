@@ -31,6 +31,10 @@ The goals / steps of this project are the following:
 
 [hough_on_road]: ./intermediate_result_images/5_hough_lines_drawn_on_road.png "Hough On Road"
 
+[extrapolated_lines_on_black]: ./intermediate_result_images/6_extrapolated_lines_on_canvas.png "estrap_black"
+
+[extrapolated_lines_on_road]: ./intermediate_result_images/6_extrapolated_lines_on_road.png "estrap_black"
+
 ---
 
 ### Reflection
@@ -151,6 +155,19 @@ In this step, I use the hough lines to create two lines, each representing a lan
 
 I modified the function draw_lines() that was provided by the course.
 
+To take out the noise, I wanted to filter the hough lines.  I checked the number of hough lines in an image, and there were over 300.  I thought that many of these were probably noise, so I developed two methods of filtering:
+#### a) Filter by Slope
+I disregarded lines that were less than a slope of 1 (45 degrees) and greater than a slope of -1.  I though that these would be noisy lines because lane lines would not have these slopes if one were driving straight in a lane.
+#### b) Filter by the location of the two x points of the line
+If the slope was greater than zero, I accepted a line if either of the x coordinates were greater than the x midpoint.  Basically, the slope of the line should be consistent with which side of the screen the line is on.  If it is not consistent, I considered it as noise and filtered out that point.
+
+NOTE: please note that my filter considered BOTH criteria; the line had to pass both to be considered.
+
+In one run, I cut down over 300 lines to about 8.
+
+After filtering the lines, I fit a line to each set of points (left lane x y coords and right lane x y coords).
+I determined where the y coordinates should be and calculated the position of the x coordinates using the line fit parameters (slope and intercept).  All of this was to calculate two lines, and then draw them on a canvas using the cv2.line() method.
+
 ```python
 def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     slope_threshold = .5
@@ -173,11 +190,9 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
         # we will use those points to fit the line
         if slope > slope_threshold or slope < -slope_threshold: 
             if slope > 0 and (x1 > x_midpoint or x2 > x_midpoint): # right line
-            #if slope > 0 and x1 > x_midpoint and x2 > x_midpoint: # right line
                 right_xs.extend((x1, x2))
                 right_ys.extend((y1, y2))
             elif slope < 0 and (x1 < x_midpoint or x2 < x_midpoint): # left line
-            #elif slope < 0 and x1 < x_midpoint and x2 < x_midpoint: # left line
                 left_xs.extend((x1, x2))
                 left_ys.extend((y1, y2))
         
@@ -208,6 +223,14 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     cv2.line(img, left_lane_top_point, left_lane_bottom_point, color, thickness)
     cv2.line(img, right_lane_top_point, right_lane_bottom_point, color, thickness)
 ```
+
+The lines on a black canvas:
+
+![extrapolated_lines_on_black]
+
+The lines on the road:
+
+![extrapolated_lines_on_road]
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
