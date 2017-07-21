@@ -27,6 +27,10 @@ The goals / steps of this project are the following:
 
 [region_filtered]: ./intermediate_result_images/3_region_filtered_canny.png "Region Filtered"
 
+[hough_on_black]: ./intermediate_result_images/4_hough_lines_drawn_on_canvas.png "Hough On Black"
+
+[hough_on_road]: ./intermediate_result_images/5_hough_lines_drawn_on_road.png "Hough On Road"
+
 ---
 
 ### Reflection
@@ -73,6 +77,7 @@ I chose threshold values of 76.5 and 153.0, which are 255 * .3 and 255 * .6.
 These are close to the values of 50 and 150, which are the values recommended in the course.
 
 The Image of my Canny Edge Detection:
+
 ![canny]
 
 ### 3) Apply Gaussian Smoothing to the Image processed with Canny Edge Detection.
@@ -88,7 +93,6 @@ Here is the image after performing smoothing before and after:
 I defined a polygon region of interest that would contain the lane lines withing the polygon and exclude everything outside of the lane lines.  To choose the points, I took a ruler and made some rough estimations about what the bounding polygon should be.  The specific values can bee seen in the make_region_of_interest(image) function below.
 Once the polygon is formed, the original image is masked to the polygon by a bitwise and method, so that only the region in the mask is kept.
 ```python
-
 """
 Part4: make region of interest
 """
@@ -110,9 +114,37 @@ def make_region_of_interest(image):
     return masked_edges
 ```
 The result image is shown below:
+
 ![region_filtered]
 
+The region filtered image is sent to the make_hough_lines() function
+
 ### 5) Calculate the hough lines.
+Next I calculated the hough lines from the region filtered image.  This is performed in the make_hough_lines() function.  I was not so sure of what values the parameters of rho, theta, and the other threshold values should be.  I tried several combinations, staying close to what was shown during the course.
+```python
+"""
+Part5: make hough lines
+"""
+# Define the Hough transform parameters
+# Make a blank the same size as our image to draw on
+def make_hough_lines(image):
+    rho = 1 # distance resolution in pixels of the Hough grid
+    theta = np.pi/180 # angular resolution in radians of the Hough grid
+    threshold = 3     # minimum number of votes (intersections in Hough grid cell)
+    min_line_len = 3 #minimum number of pixels making up a line
+    max_line_gap = 3    # maximum gap in pixels between connectable line segments
+
+    hough_lines = cv2.HoughLinesP(image, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
+    return hough_lines
+```
+The Image of the Hough lines on a black canvas:
+
+![hough_on_black]
+
+The Image of the Hough lines on the road:
+
+![hough_on_road]
+
 
 
 
