@@ -1,8 +1,8 @@
 # **Finding Lane Lines on the Road** 
 
-## Writeup Template
+## Project 1: Detecting Lane Lines Writeup
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
+## Author: William Gillespie
 
 ---
 
@@ -17,12 +17,58 @@ The goals / steps of this project are the following:
 
 [image1]: ./examples/grayscale.jpg "Grayscale"
 
+[grayscale]: ./intermediate_result_images/1_grayscale.png "MyGrayscaleImage"
+
+[grayscale]: ./intermediate_result_images/1_grayscale.png "MyGrayscaleImage"
+
 ---
 
 ### Reflection
 
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
+My pipeline is in my process_image2() method in my P1 jupyter notebook.
+There are 6 steps in my pipeline:
+1) Convert to greyscale
+2) Apply Canny Edge detection to image.
+3) Apply Gaussian smoothing to the image (not explicitly listed in the process_image2() method; applied in step 2's method).
+4) Define a region of interest, and bitwise and the image with that region to exclude non-lane-line-items.
+5) Calculate the hough lines.
+6) Draw lines on image by using the hould lines as input.
+
+## Detailed Description of Each Step
+
+# 1) Convert to greyscale
+My first step was to create a greyscale image.I did so with the following function:
+
+greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+![grayscale]
+
+# 2) Apply Canny Edge Detection to Image
+My next step was to apply canny edge detection to the image.
+This was done in my make_canny_image(image) function
+
+```python
+
+"""
+Part 2: make canny images & apply gaussian blur
+"""
+def make_canny_image(image):
+    low_threshold = 255 *  0.3
+    high_threshold = 255 * 0.6
+    kernel_size = 5
+    image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
+    image = cv2.Canny(image, low_threshold, high_threshold)
+    image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
+    return image
+```
+As you can see, I chose threshold values of 76.5 and 153.0, which are 255 * .3 and 255 * .6.
+These are close to the values of 50 and 150, which are the values recommended in the course.
+
+
+
+--
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
 
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
