@@ -16,7 +16,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./examples/grayscale.jpg "Grayscale"
-
+[grayscale]: ./examples/grayscale.jpg "MyGrayscaleImage"
 ---
 
 ### Reflection
@@ -38,7 +38,7 @@ There are 6 steps in my pipeline:
 My first step was to create a greyscale image.
 I did so with the following function:
 greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-![greyscale image]: ./intermediate_result_images/1_grayscale.png "Grayscale"
+![alt text][grayscale]
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
