@@ -25,6 +25,8 @@ The goals / steps of this project are the following:
 
 [canny_with_gaussian_smoothing]: ./intermediate_result_images/2_canny.png "Canny With Smoothing"
 
+[region_filtered]: ./intermediate_result_images/3_region_filtered_canny.png "Region Filtered"
+
 ---
 
 ### Reflection
@@ -78,9 +80,41 @@ in part 2, I chose to perform Gaussian smoothing before and after Canny Edge Det
 
 I chose a kernel size of 5 for no good reason other than it was used in the course code.
 
-Here is the image after smoothing before and after:
+Here is the image after performing smoothing before and after:
 
 ![canny_with_gaussian_smoothing]
+
+### 4) Define a region of interest, and bitwise and the image with that region to exclude non-lane-line-items.
+I defined a polygon region of interest that would contain the lane lines withing the polygon and exclude everything outside of the lane lines.  To choose the points, I took a ruler and made some rough estimations about what the bounding polygon should be.  The specific values can bee seen in the make_region_of_interest(image) function below.
+Once the polygon is formed, the original image is masked to the polygon by a bitwise and method, so that only the region in the mask is kept.
+```python
+
+"""
+Part4: make region of interest
+"""
+def make_region_of_interest(image):
+    x_size = image.shape[1]
+    y_size = image.shape[0]
+    bottom_left = (x_size * 0.05, y_size)
+    top_left = (x_size * .45, y_size * .6)
+    top_right = (x_size * .55, y_size * .6)
+    bottom_right = (x_size * 0.95, y_size)
+    vertices = np.array([[bottom_left, top_left, top_right, bottom_right]],
+                       dtype=np.int32)
+    
+    mask = np.zeros_like(image)   
+    ignore_mask_color = 255
+    
+    cv2.fillPoly(mask, vertices, ignore_mask_color)
+    masked_edges = cv2.bitwise_and(image, mask)
+    return masked_edges
+```
+The result image is shown below:
+![region_filtered]
+
+### 5) Calculate the hough lines.
+
+
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
