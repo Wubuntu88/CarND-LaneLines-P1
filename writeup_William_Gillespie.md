@@ -33,7 +33,7 @@ The goals / steps of this project are the following:
 
 [extrapolated_lines_on_black]: ./intermediate_result_images/6_extrapolated_lines_on_canvas.png "estrap_black"
 
-[extrapolated_lines_on_road]: ./intermediate_result_images/6_extrapolated_lines_on_road.png "estrap_black"
+[extrapolated_lines_on_road]: ./intermediate_result_images/7_extrapolated_lines_on_road.png "estrap_black"
 
 ---
 
@@ -42,13 +42,14 @@ The goals / steps of this project are the following:
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
 My pipeline is in my process_image2() method in my P1 jupyter notebook.
-There are 6 steps in my pipeline:
+There are 7 steps in my pipeline:
 1) Convert to greyscale
 2) Apply Canny Edge detection to image.
 3) Apply Gaussian smoothing to the image (not explicitly listed in the process_image2() method; applied in step 2's method).
 4) Define a region of interest, and bitwise and the image with that region to exclude non-lane-line-items.
 5) Calculate the hough lines.
 6) Draw lines on image by using the hould lines as input.
+7) Create an image with the lines on the road.
 
 ## Detailed Description of Each Step
 
@@ -149,7 +150,7 @@ The Image of the Hough lines on the road:
 
 ![hough_on_road]
 
-### 6) Draw lines on image by using the hould lines as input.
+### 6) Draw lines on image by using the hough lines as input.
 
 In this step, I use the hough lines to create two lines, each representing a lane line.  The attempt is to cut out the noise of all of the hough lines.
 
@@ -231,6 +232,33 @@ The lines on a black canvas:
 The lines on the road:
 
 ![extrapolated_lines_on_road]
+
+
+### 7) Create an image with the lines on the road.
+
+The last step was to overlay the lienes on the road image.  I did so with the weighted_img() method provided by the course.
+
+```python
+def weighted_img(img, initial_img, α=0.8, β=1., λ=0.):
+    return cv2.addWeighted(initial_img, α, img, β, λ)
+```
+
+That concludes the presentation of my pipeline.  The entire pipeline put together is shown below:
+
+```python
+def process_image2(image):
+    # NOTE: The output you return should be a color image (3 channel) for processing video below
+    # TODO: put your pipeline here,
+    # you should return the final output (image where lines are drawn on lanes)
+    greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    canny_image = make_canny_image(greyscale_image)
+    region_filtered_image = make_region_of_interest(canny_image)
+    hough_lines = make_hough_lines(region_filtered_image)
+    line_img = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+    draw_lines(line_img, hough_lines)
+    result = weighted_img(line_img, image)
+    return result
+```
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
