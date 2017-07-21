@@ -21,6 +21,10 @@ The goals / steps of this project are the following:
 
 [grayscale]: ./intermediate_result_images/1_grayscale.png "MyGrayscaleImage"
 
+[canny]: ./gaussian_blur_images/no_blur.png "Canny"
+
+[canny_with_gaussian_smoothing]: ./intermediate_result_images/2_canny.png "Canny With Smoothing"
+
 ---
 
 ### Reflection
@@ -63,10 +67,19 @@ def make_canny_image(image):
     image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
     return image
 ```
-As you can see, I chose threshold values of 76.5 and 153.0, which are 255 * .3 and 255 * .6.
+I chose threshold values of 76.5 and 153.0, which are 255 * .3 and 255 * .6.
 These are close to the values of 50 and 150, which are the values recommended in the course.
 
+The Image of my Canny Edge Detection:
+![canny]
 
+# 3) Apply Gaussian Smoothing to the Image processed with Canny Edge Detection.
+in part 2, I chose to perform Gaussian smoothing before and after Canny Edge Detection.  I tried doing it without smoothing, with smoothing before canny, with smoothing after canny, and with smoothing before and after.  I noticed that applying smoothing after, and before and after offered a smooth image.  The smoothing after vs. smoothing before and after looked the same, so I chose the before and after solution.
+
+I chose a kernel size of 5 for no good reason other than it was used in the course code.
+
+Here is the image after smoothing before and after:
+![canny_with_gaussian_smoothing]
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
