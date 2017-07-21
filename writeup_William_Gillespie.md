@@ -145,8 +145,69 @@ The Image of the Hough lines on the road:
 
 ![hough_on_road]
 
+### 6) Draw lines on image by using the hould lines as input.
 
+In this step, I use the hough lines to create two lines, each representing a lane line.  The attempt is to cut out the noise of all of the hough lines.
 
+I modified the function draw_lines() that was provided by the course.
+
+```python
+def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
+    slope_threshold = .5
+    
+    y_size = img.shape[0]
+    x_size = img.shape[1]
+    x_midpoint = x_size / 2
+    
+    left_xs = []
+    left_ys = []
+    right_xs = []
+    right_ys = []
+    
+    for line in lines:
+        unwrapped_line = line[0]
+        x1,y1,x2,y2 = unwrapped_line # unpack tuple
+        slope = get_slope_of_line(unwrapped_line)
+
+        # if the slope is greater than 45 degrees (slope of 1) or less than negative 45 degrees, 
+        # we will use those points to fit the line
+        if slope > slope_threshold or slope < -slope_threshold: 
+            if slope > 0 and (x1 > x_midpoint or x2 > x_midpoint): # right line
+            #if slope > 0 and x1 > x_midpoint and x2 > x_midpoint: # right line
+                right_xs.extend((x1, x2))
+                right_ys.extend((y1, y2))
+            elif slope < 0 and (x1 < x_midpoint or x2 < x_midpoint): # left line
+            #elif slope < 0 and x1 < x_midpoint and x2 < x_midpoint: # left line
+                left_xs.extend((x1, x2))
+                left_ys.extend((y1, y2))
+        
+    right_lane_slope, right_lane_intercept = np.polyfit(np.array(right_xs), np.array(right_ys), 1)
+    left_lane_slope, left_lane_intercept = np.polyfit(np.array(left_xs), np.array(left_ys), 1)
+    
+    # left lane points
+    top_y_left_lane = int(y_size * 0.6)
+    top_x_left_lane = int( (top_y_left_lane - left_lane_intercept) / left_lane_slope )
+    
+    bottom_y_left_lane = int( y_size )# max(left_ys)
+    bottom_x_left_lane = int( (bottom_y_left_lane - left_lane_intercept) / left_lane_slope )
+    
+    # right lane points
+    top_y_right_lane = int( y_size * 0.6 )
+    top_x_right_lane = int( (top_y_right_lane - right_lane_intercept) / right_lane_slope )
+    
+    bottom_y_right_lane = int( y_size )
+    bottom_x_right_lane = int( (bottom_y_right_lane - right_lane_intercept) / right_lane_slope )
+    
+    # make lane line tuples
+    left_lane_top_point = (top_x_left_lane, top_y_left_lane)
+    left_lane_bottom_point = (bottom_x_left_lane, bottom_y_left_lane)
+    
+    right_lane_top_point = (top_x_right_lane, top_y_right_lane)
+    right_lane_bottom_point = (bottom_x_right_lane, bottom_y_right_lane)
+    
+    cv2.line(img, left_lane_top_point, left_lane_bottom_point, color, thickness)
+    cv2.line(img, right_lane_top_point, right_lane_bottom_point, color, thickness)
+```
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
