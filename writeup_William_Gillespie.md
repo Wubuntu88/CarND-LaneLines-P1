@@ -37,9 +37,10 @@ There are 6 steps in my pipeline:
 ## Detailed Description of Each Step
 
 # 1) Convert to greyscale
-My first step was to create a greyscale image.
-I did so with the following function:
+My first step was to create a greyscale image.I did so with the following function:
+
 greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
 ![alt text][grayscale]
 
 --
