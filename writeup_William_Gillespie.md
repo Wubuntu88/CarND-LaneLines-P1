@@ -86,7 +86,7 @@ The Image of my Canny Edge Detection:
 ![canny]
 
 ### 3) Apply Gaussian Smoothing to the Image processed with Canny Edge Detection.
-in part 2, I chose to perform Gaussian smoothing before and after Canny Edge Detection.  I tried doing it without smoothing, with smoothing before canny, with smoothing after canny, and with smoothing before and after.  I noticed that applying smoothing after, and before and after offered a smooth image.  The smoothing after vs. smoothing before and after looked the same, so I chose the before and after solution.
+In part 2, I chose to perform Gaussian smoothing before and after Canny Edge Detection.  I tried doing it without smoothing, with smoothing before canny, with smoothing after canny, and with smoothing before and after canny.  I noticed that applying smoothing after, and before and after offered a smooth image.  The smoothing after vs. smoothing before and after looked the same, so I chose the before and after solution.
 
 I chose a kernel size of 5 for no good reason other than it was used in the course code.
 
@@ -95,7 +95,7 @@ Here is the image after performing smoothing before and after:
 ![canny_with_gaussian_smoothing]
 
 ### 4) Define a region of interest, and bitwise and the image with that region to exclude non-lane-line-items.
-I defined a polygon region of interest that would contain the lane lines withing the polygon and exclude everything outside of the lane lines.  To choose the points, I took a ruler and made some rough estimations about what the bounding polygon should be.  The specific values can bee seen in the make_region_of_interest(image) function below.
+I defined a polygon region of interest that would contain the lane lines within the polygon and exclude everything outside of the lane lines.  To choose the points, I took a ruler and made some rough estimations about what the bounding polygon should be.  The specific values can bee seen in the make_region_of_interest(image) function below.
 Once the polygon is formed, the original image is masked to the polygon by a bitwise and method, so that only the region in the mask is kept.
 ```python
 """
@@ -158,7 +158,7 @@ I modified the function draw_lines() that was provided by the course.
 
 To take out the noise, I wanted to filter the hough lines.  I checked the number of hough lines in an image, and there were over 300.  I thought that many of these were probably noise, so I developed two methods of filtering:
 #### a) Filter by Slope
-I disregarded lines that were less than a slope of 1 (45 degrees) and greater than a slope of -1.  I though that these would be noisy lines because lane lines would not have these slopes if one were driving straight in a lane.
+I disregarded lines that were less than a slope of 1 (45 degrees) and greater than a slope of -1.  I though that these would be noisy lines because lane lines would not have these slopes if one were driving straight in a lane.  (Lanes should not be horizontal).
 #### b) Filter by the location of the two x points of the line
 If the slope was greater than zero, I accepted a line if either of the x coordinates were greater than the x midpoint.  Basically, the slope of the line should be consistent with which side of the screen the line is on.  If it is not consistent, I considered it as noise and filtered out that point.
 
@@ -272,4 +272,4 @@ One way to solve the problem of the noisy houghlines causing the slope to change
 
 Another method of solving the line's slope rapid changes would be to keep track of that lane's slope n frames back.  If the slope jumps too suddently, we can just use the previous frame's slope, or an average of the last n frames' slope.  N could be anywhere from 1 to 10, depending on how fast frames are coming in.
 
-To fix the region of interest issue in the optional challenge, we could check to see if the slope is totally bogus (lets say close to zero or very high (9+).  If this is the case we can lower the top y coordinates of the region of interest and recompute the slope.  We could get several images of a car going down a curvy lane and see how far we might have to bring the y coordinates down.
+To fix the region of interest issue in the optional challenge, we could check to see if the slope is totally bogus (let's say close to zero or very high (9+).  If this is the case we can lower the top y coordinates of the region of interest and recompute the slope.  We could get several images of a car going down a curvy lane and see how far we might have to bring the y coordinates down.
