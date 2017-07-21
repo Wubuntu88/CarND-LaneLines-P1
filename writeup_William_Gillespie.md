@@ -39,7 +39,7 @@ The goals / steps of this project are the following:
 
 ### Reflection
 
-### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+### 1. Pipeline Description
 
 My pipeline is in my process_image2() method in my P1 jupyter notebook.
 There are 7 steps in my pipeline:
