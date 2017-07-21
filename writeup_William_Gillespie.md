@@ -260,26 +260,16 @@ def process_image2(image):
     return result
 ```
 
---
-My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
-
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
-
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
-![alt text][image1]
-
-
 ### 2. Identify potential shortcomings with your current pipeline
 
+One shortcomming is that in the video, the line sometimes changes slope suddently for a frame.  I believe this is due to some noisy hough lines not being filtered out by the draw_lines method.
 
-One potential shortcoming would be what would happen when ... 
-
-Another shortcoming could be ...
-
+Another problem is on the optional challenge.  My process_image2 method drew very erratic lines, although they were roughly in the ball park.  I belive some of the problem was the the region of interest was shorter because the car was turning, and the relevant information was not perfectly in the region of interest.  I also think some of the additional line adornments, especially on the yellow lines, may have been causing some issues.
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
+One way to solve the problem of the noisy houghlines causing the slope to change rapidly is to try to tweak the filter the eliminates the noisy hough lines.  I could try adjusting the slope limit at which lines are rejected, or tweak the x point requirements for filtering.
 
-Another potential improvement could be to ...
+Another method of solving the line's slope rapid changes would be to keep track of that lane's slope n frames back.  If the slope jumps too suddently, we can just use the previous frame's slope, or an average of the last n frames' slope.  N could be anywhere from 1 to 10, depending on how fast frames are coming in.
+
+To fix the region of interest issue in the optional challenge, we could check to see if the slope is totally bogus (lets say close to zero or very high (9+).  If this is the case we can lower the top y coordinates of the region of interest and recompute the slope.  We could get several images of a car going down a curvy lane and see how far we might have to bring the y coordinates down.
