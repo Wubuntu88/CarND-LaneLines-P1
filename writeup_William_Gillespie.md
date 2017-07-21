@@ -19,6 +19,8 @@ The goals / steps of this project are the following:
 
 [grayscale]: ./intermediate_result_images/1_grayscale.png "MyGrayscaleImage"
 
+[grayscale]: ./intermediate_result_images/1_grayscale.png "MyGrayscaleImage"
+
 ---
 
 ### Reflection
@@ -42,6 +44,29 @@ My first step was to create a greyscale image.I did so with the following functi
 greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 ![grayscale]
+
+# 2) Apply Canny Edge Detection to Image
+My next step was to apply canny edge detection to the image.
+This was done in my make_canny_image(image) function
+
+```python
+
+"""
+Part 2: make canny images & apply gaussian blur
+"""
+def make_canny_image(image):
+    low_threshold = 255 *  0.3
+    high_threshold = 255 * 0.6
+    kernel_size = 5
+    image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
+    image = cv2.Canny(image, low_threshold, high_threshold)
+    image = cv2.GaussianBlur(image, (kernel_size, kernel_size), 0)
+    return image
+```
+As you can see, I chose threshold values of 76.5 and 153.0, which are 255 * .3 and 255 * .6.
+These are close to the values of 50 and 150, which are the values recommended in the course.
+
+
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
