@@ -42,14 +42,14 @@ There are 6 steps in my pipeline:
 
 ## Detailed Description of Each Step
 
-# 1) Convert to greyscale
+### 1) Convert to greyscale
 My first step was to create a greyscale image.I did so with the following function:
 
 greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 ![grayscale]
 
-# 2) Apply Canny Edge Detection to Image
+### 2) Apply Canny Edge Detection to Image
 My next step was to apply canny edge detection to the image.
 This was done in my make_canny_image(image) function
 
@@ -73,12 +73,13 @@ These are close to the values of 50 and 150, which are the values recommended in
 The Image of my Canny Edge Detection:
 ![canny]
 
-# 3) Apply Gaussian Smoothing to the Image processed with Canny Edge Detection.
+### 3) Apply Gaussian Smoothing to the Image processed with Canny Edge Detection.
 in part 2, I chose to perform Gaussian smoothing before and after Canny Edge Detection.  I tried doing it without smoothing, with smoothing before canny, with smoothing after canny, and with smoothing before and after.  I noticed that applying smoothing after, and before and after offered a smooth image.  The smoothing after vs. smoothing before and after looked the same, so I chose the before and after solution.
 
 I chose a kernel size of 5 for no good reason other than it was used in the course code.
 
 Here is the image after smoothing before and after:
+
 ![canny_with_gaussian_smoothing]
 
 --
