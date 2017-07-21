@@ -41,7 +41,7 @@ My first step was to create a greyscale image.I did so with the following functi
 
 greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-![alt text][grayscale]
+![grayscale]
 
 --
 My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
