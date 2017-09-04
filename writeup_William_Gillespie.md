@@ -56,7 +56,9 @@ There are 7 steps in my pipeline:
 ### 1) Convert to greyscale
 My first step was to create a greyscale image.I did so with the following function:
 
+```python
 greyscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+```
 
 ![grayscale]
 
